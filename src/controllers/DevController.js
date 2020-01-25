@@ -41,11 +41,38 @@ module.exports = {
         return res.json(dev);
     },
 
-    async update() {
+    async update(req, res) {
+        const { id } = req.params;
+        const { github_username, techs, latitude, longitude } = req.body;
 
+        const apiResponse = await axios.get(`https://api.github.com/users/${github_username}`);
+    
+        const { name = login, avatar_url, bio } = apiResponse.data;
+
+        const techsArray = parseStringAsArray(techs);
+
+        const location = {
+            type: 'Point',
+            coordinates: [longitude, latitude],
+        }
+
+        const dev = await Dev.findByIdAndUpdate(id, {
+            github_username,
+            name,
+            avatar_url,
+            bio,
+            techs: techsArray,
+            location
+        }, {new: true});
+
+        return res.json(dev);
     },
 
-    async destroy() {
-        
+    async destroy(req, res) {
+        const { id } = req.params;
+
+        const dev = await Dev.findByIdAndRemove(id);
+
+        return res.json(dev);
     }
 }
