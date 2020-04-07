@@ -18,7 +18,5 @@ app.use(routes);
 const port = process.env.PORT || 3333;
 const DYNO_URL = "https://my-dev-radar.herokuapp.com";
 app.listen(port, () => {
-    if(process.env.node_env === 'production') {
-        wakeUpDyno(DYNO_URL);
-    }
+    wakeUpDyno(DYNO_URL);
 });
