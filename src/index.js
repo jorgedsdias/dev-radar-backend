@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const routes = require('./routes');
+const wakeUpDyno = require('./wakeUpDyno');
 
 const app = express();
 
@@ -15,4 +16,7 @@ app.use(express.json());
 app.use(routes);
 
 const port = process.env.PORT || 3333;
-app.listen(port);
+const DYNO_URL = "https://my-dev-radar.herokuapp.com";
+app.listen(port, () => {
+    wakeUpDyno(DYNO_URL);
+});
